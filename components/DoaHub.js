@@ -1,5 +1,6 @@
 // components/DoaHub.js
 import { ref, computed, onMounted, onUnmounted } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+import { fetchApiData } from '../services/apiClient.js';
 
 export default {
     name: "DoaHub",
