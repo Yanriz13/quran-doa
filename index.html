@@ -20,6 +20,9 @@
     
     <!-- Custom Style Sheet -->
     <link rel="stylesheet" href="app.css">
+    
+    <!-- PWA Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <div id="app" :class="['app-container', themeClass]" v-cloak>
@@ -79,5 +82,16 @@
 
     <!-- Main JavaScript App Entry -->
     <script type="module" src="main.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('PWA Service Worker terdaftar!', reg))
+                    .catch(err => console.error('PWA Service Worker gagal:', err));
+            });
+        }
+    </script>
 </body>
 </html>
