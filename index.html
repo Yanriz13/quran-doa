@@ -19,15 +19,14 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <!-- Custom Style Sheet -->
-    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="app.css?v=1.1">
     
     <!-- PWA Web App Manifest -->
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <div id="app" :class="['app-container', themeClass]" v-cloak>
-        <!-- Mobile Shell Wrapper (Aesthetic on Desktop, Seamless on Mobile) -->
-        <div class="mobile-frame">
+        <div class="app-shell">
             <!-- App Header Component -->
             <app-header 
                 :hijri-date="hijriDate" 

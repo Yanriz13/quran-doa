@@ -8,14 +8,14 @@
     --accent-red: #f43f5e;
     
     /* Dark Mode variables (Default) */
-    --bg-app: #060a13;
-    --bg-shell: #0a0f1d;
-    --bg-card: rgba(22, 30, 49, 0.7);
-    --bg-card-hover: rgba(30, 41, 69, 0.85);
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --text-inverse: #0a0f1d;
-    --border-color: rgba(255, 255, 255, 0.08);
+    --bg-app: #0f172a;
+    --bg-shell: #1e293b;
+    --bg-card: #2d3e58; 
+    --bg-card-hover: #3b4e6b;
+    --text-main: #ffffff; 
+    --text-muted: #ffffff; 
+    --text-inverse: #ffffff; /* Mengubah teks tombol/badge yang tadinya gelap menjadi putih */
+    --border-color: rgba(255, 255, 255, 0.2);
     --glass-blur: blur(20px);
     --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
     --shadow-lg: 0 15px 35px -5px rgba(0, 0, 0, 0.6), 0 10px 15px -6px rgba(0, 0, 0, 0.6);
@@ -54,11 +54,18 @@
 body {
     font-family: var(--font-sans);
     background-color: var(--bg-app);
+    color: #ffffff; /* Default semua teks putih */
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Mulai dari atas, bukan di tengah */
     min-height: 100vh;
-    overflow: hidden;
+    overflow-y: auto; /* Bisa scroll ke bawah seperti web biasa */
+    overflow-x: hidden;
+}
+
+/* Pastikan elemen teks umum default putih (bukan hitam) */
+h1, h2, h3, h4, h5, h6, p, span, div, label, li, a, small, strong, b {
+    color: inherit;
 }
 
 /* --- COMMON UTILITY CLASSES --- */
@@ -169,75 +176,67 @@ body {
     position: relative !important;
 }
 
-/* --- MOBILE SHELL FRAME --- */
+/* --- APPLICATION LAYOUT --- */
 .app-container {
     width: 100%;
-    height: 100vh;
-    height: 100dvh;
+    min-height: 100vh;
+    background-color: #020617;
     display: flex;
     justify-content: center;
-    align-items: center;
-    transition: background 0.3s ease;
+    overflow-y: auto; /* Memungkinkan scroll pada container utama */
 }
 
-.mobile-frame {
-    position: relative;
+.app-shell {
     width: 100%;
-    max-width: 430px;
-    height: 100%;
-    max-height: 880px;
-    background-color: var(--bg-shell);
-    color: var(--text-main);
+    max-width: 480px; 
+    background-color: #0f172a; 
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    box-shadow: var(--shadow-lg);
-    border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 0 100px rgba(0, 0, 0, 0.8);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0 auto; 
+    overflow: visible; 
 }
 
-/* Mobile phones: full screen, nav fixed at bottom */
-@media (max-width: 479px) {
-    .mobile-frame {
-        max-width: 100%;
-        max-height: 100vh;
-        max-height: 100dvh;
-        height: 100vh;
-        height: 100dvh;
-        border: none;
-        border-radius: 0;
-    }
-    .app-navigation {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
-        width: 100%;
-    }
-    .app-content {
-        padding-bottom: 90px !important;
-    }
-}
-
-/* Desktop specific mock bezel */
-@media (min-width: 480px) {
-    .mobile-frame {
-        border-radius: 40px;
-        border: 12px solid #1e293b;
-        height: 90vh;
-        max-height: 820px;
-        width: 380px;
-        margin: auto;
-    }
-}
-
-/* --- HEADER STYLING --- */
 .app-header {
-    padding: 24px 20px 16px 20px;
-    background: linear-gradient(180deg, var(--bg-shell) 70%, rgba(10, 15, 29, 0) 100%);
-    z-index: 10;
-    flex-shrink: 0;
+    width: 100%;
+    padding: 24px 20px 20px 20px;
+    background-color: #0f172a; /* Samakan dengan bg-shell agar transparan rapi */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.app-content {
+    width: 100%;
+    flex: 1;
+    padding: 16px 20px 120px 20px;
+}
+
+/* --- FLOATING NAVIGATION (Wedding Style) --- */
+.app-navigation {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 60px);
+    max-width: 400px;
+    height: 64px;
+    background: rgba(30, 41, 59, 0.9); /* Latar belakang navigasi lebih terang */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Border lebih tegas */
+    border-radius: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 1000;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    padding: 0 15px;
 }
 
 .header-top {
@@ -272,12 +271,13 @@ body {
 
 .hijri-date {
     font-size: 10px;
-    color: var(--text-muted);
+    color: #ffffff;
     font-weight: 600;
     display: block;
     margin-top: 2px;
     text-transform: uppercase;
     letter-spacing: 0.3px;
+    opacity: 0.9;
 }
 
 .location-badge {
@@ -313,43 +313,7 @@ body {
     color: var(--primary-color);
 }
 
-/* --- MAIN CONTENT & SCROLL --- */
-.app-content {
-    flex-grow: 1;
-    overflow-y: auto;
-    min-height: 0;
-    padding: 8px 20px 24px 20px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-}
-
-.app-content::-webkit-scrollbar {
-    display: none;
-}
-
-/* --- BOTTOM NAVIGATION BAR --- */
-.app-navigation {
-    height: 72px;
-    background: var(--bg-card);
-    border-top: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0 8px;
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    z-index: 10;
-    flex-shrink: 0;
-}
-
-/* Safe area bottom padding for iPhone notch */
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
-    .app-navigation {
-        height: calc(72px + env(safe-area-inset-bottom));
-        padding-bottom: env(safe-area-inset-bottom);
-    }
-}
-
+/* --- NAVIGATION ITEMS --- */
 .nav-item {
     background: none;
     border: none;
@@ -388,17 +352,19 @@ body {
 .card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 24px;
-    padding: 20px;
-    margin-bottom: 16px;
+    border-radius: 28px; /* Lebih membulat agar elegan */
+    padding: 24px; /* Padding lebih konsisten */
+    margin-bottom: 20px;
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
     transition: all 0.3s ease;
 }
 
 .card:hover {
     background: var(--bg-card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px -12px rgba(0,0,0,0.6);
 }
 
 /* Card Headers */
@@ -450,7 +416,7 @@ body {
 
 .btn-primary {
     background: var(--primary-color);
-    color: var(--text-inverse);
+    color: #ffffff;
     box-shadow: 0 4px 14px var(--primary-glow);
 }
 
@@ -472,7 +438,7 @@ body {
 
 .btn-success {
     background: var(--primary-color);
-    color: var(--text-inverse);
+    color: #ffffff;
 }
 
 .btn-sm {
@@ -535,7 +501,7 @@ body {
 
 .next-label {
     font-size: 10px;
-    color: var(--text-muted);
+    color: #ffffff;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 700;
@@ -555,6 +521,7 @@ body {
     font-size: 18px;
     font-weight: 700;
     letter-spacing: 0.5px;
+    color: #ffffff;
 }
 
 .quick-status {
@@ -564,7 +531,7 @@ body {
 
 .status-msg {
     font-size: 12px;
-    color: var(--text-muted);
+    color: #ffffff;
     font-weight: 500;
 }
 
@@ -572,17 +539,17 @@ body {
 .timings-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px; /* Lebih banyak ruang antar baris */
 }
 
 .timing-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid transparent;
+    padding: 14px 18px; /* Padding lebih luas */
+    border-radius: 20px; /* Lebih membulat agar serasi */
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     transition: all 0.2s ease;
 }
 
@@ -609,6 +576,7 @@ body {
 .p-name {
     font-weight: 600;
     font-size: 14px;
+    color: #ffffff;
 }
 
 .p-info {
@@ -639,9 +607,10 @@ body {
 
 .p-desc {
     font-size: 10px;
-    color: var(--text-muted);
+    color: #ffffff !important;
     line-height: 1.4;
     margin: 0;
+    opacity: 0.9;
 }
 
 .timing-row.active .p-name {
@@ -659,6 +628,7 @@ body {
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 15px;
+    color: #ffffff;
 }
 
 .timing-row.active .p-time {
@@ -778,13 +748,14 @@ body {
 .qibla-angle-title {
     font-size: 16px;
     font-weight: 700;
+    color: #ffffff;
 }
 
 .angle-value {
     font-family: var(--font-heading);
     font-weight: 800;
     font-size: 22px;
-    color: var(--secondary-color);
+    color: #ffffff; /* Mengubah emas menjadi putih agar lebih jelas */
     margin-top: 4px;
     text-shadow: 0 0 10px var(--secondary-glow);
 }
@@ -808,12 +779,14 @@ body {
 .info-card h4 {
     font-size: 13px;
     font-weight: 700;
+    color: #ffffff;
 }
 
 .info-card p {
     font-size: 11px;
     line-height: 1.4;
     margin-top: 2px;
+    color: #ffffff;
 }
 
 /* --- TAB 3: DHIKR COUNTER --- */
@@ -886,10 +859,13 @@ body {
 
 .counter-main-card {
     position: relative;
-    padding: 15px 12px 12px 12px;
-    border-radius: 20px;
-    background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.08), var(--bg-card));
-    margin-bottom: 0;
+    padding: 30px 20px;
+    border-radius: 28px;
+    background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.1), var(--bg-card));
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .target-badge {
@@ -899,39 +875,39 @@ body {
     font-size: 8px;
     font-weight: 700;
     background: var(--secondary-color);
-    color: var(--text-inverse);
+    color: #ffffff;
     padding: 1px 5px;
     border-radius: 5px;
 }
 
 .counter-display {
     position: relative;
-    width: 130px;
-    height: 130px;
-    margin: 0 auto 10px auto;
+    width: 170px;
+    height: 170px;
+    margin: 10px auto 20px auto;
     border-radius: 50%;
-    background: #000;
-    border: 4px solid rgba(255, 255, 255, 0.03);
+    background: radial-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 8px solid rgba(255, 255, 255, 0.03);
     box-shadow: 
-        0 0 0 1px rgba(255, 255, 255, 0.05),
-        inset 0 0 15px rgba(0,0,0,0.8),
-        0 4px 10px rgba(0,0,0,0.4);
+        0 15px 35px rgba(0,0,0,0.5),
+        inset 0 4px 15px rgba(255,255,255,0.05);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .counter-display:active {
-    transform: scale(0.96);
+    transform: scale(0.92);
 }
 
 .count-number {
     font-family: var(--font-heading);
     font-weight: 800;
-    font-size: 42px;
+    font-size: 56px;
     color: var(--primary-color);
-    text-shadow: 0 0 12px var(--primary-glow);
+    text-shadow: 0 0 20px var(--primary-glow);
     line-height: 1;
 }
 
@@ -1013,6 +989,7 @@ body {
 .history-phrase {
     font-weight: 700;
     font-size: 11px;
+    color: #ffffff;
 }
 
 .history-date {
@@ -1098,6 +1075,7 @@ body {
     font-size: 15px;
     font-weight: 700;
     font-family: var(--font-heading);
+    color: #ffffff;
 }
 
 .surah-arabic {
@@ -1111,6 +1089,7 @@ body {
     display: block;
     margin-top: 2px;
     font-size: 11px;
+    color: #ffffff;
 }
 
 /* Surah Detail View Hero */
@@ -1150,7 +1129,7 @@ body {
 
 .btn-audio-new.playing {
     background: var(--primary-color);
-    color: var(--text-inverse);
+    color: #ffffff;
     border-color: var(--primary-color);
     box-shadow: 0 0 12px var(--primary-glow);
 }
@@ -1382,6 +1361,7 @@ body {
 /* --- TAB 5: SETTINGS --- */
 .setting-item {
     font-size: 13px;
+    color: #ffffff;
 }
 
 .border-b {
@@ -1672,6 +1652,7 @@ input:checked + .slider:before {
 .lesson-name {
     font-size: 14px;
     font-weight: 700;
+    color: #ffffff;
 }
 
 /* Iqro Board / Study Flashcards */

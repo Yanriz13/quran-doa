@@ -7,7 +7,7 @@ export default {
         <div class="doa-hub-tab tab-content">
             <!-- 1. DOAS LIST VIEW -->
             <div v-if="!selectedDoa" class="doa-list-view">
-                <div class="card welcome-card text-center mb-4" style="background: radial-gradient(circle at bottom right, rgba(234, 179, 8, 0.1), var(--bg-card));">
+                <div class="card welcome-card text-center mb-4" style="background: radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.96), var(--bg-card));">
                     <span class="welcome-emoji">🤲</span>
                     <h2>Kumpulan Doa Harian</h2>
                     <p class="text-sm text-muted mt-1">Daftar lengkap 200+ doa dan dzikir harian dari e-Quran.id</p>
