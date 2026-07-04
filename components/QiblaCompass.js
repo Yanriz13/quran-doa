@@ -12,7 +12,7 @@ export default {
         }
     },
     template: `
-        <div class="qibla-tab">
+        <div class="qibla-tab tab-content">
             <div class="card compass-card text-center">
                 <div class="compass-wrapper">
                     <!-- Compass Outer Ring -->

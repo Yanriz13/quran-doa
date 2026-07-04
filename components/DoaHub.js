@@ -4,7 +4,7 @@ import { ref, computed, onMounted, onUnmounted } from 'https://unpkg.com/vue@3/d
 export default {
     name: "DoaHub",
     template: `
-        <div class="doa-hub-tab">
+        <div class="doa-hub-tab tab-content">
             <!-- 1. DOAS LIST VIEW -->
             <div v-if="!selectedDoa" class="doa-list-view">
                 <div class="card welcome-card text-center mb-4" style="background: radial-gradient(circle at bottom right, rgba(234, 179, 8, 0.1), var(--bg-card));">

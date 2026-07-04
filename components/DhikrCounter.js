@@ -4,7 +4,7 @@ import { ref, computed, onMounted, watch } from 'https://unpkg.com/vue@3/dist/vu
 export default {
     name: "DhikrCounter",
     template: `
-        <div class="dhikr-tab">
+        <div class="dhikr-tab tab-content">
             <!-- Selector for Dhikr Phrase -->
             <div class="card selector-card">
                 <div class="phrase-picker">

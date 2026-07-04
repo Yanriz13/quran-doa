@@ -5,7 +5,7 @@ export default {
     name: "Settings",
     emits: ["settings-changed"],
     template: `
-        <div class="settings-tab">
+        <div class="settings-tab tab-content">
             <!-- Theme Settings -->
             <div class="card settings-card">
                 <div class="card-header">

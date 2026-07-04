@@ -24,7 +24,7 @@ export default {
     },
     emits: ["location-request", "play-adhan", "install-click"],
     template: `
-        <div class="prayer-times-tab">
+        <div class="prayer-times-tab tab-content">
             <!-- 1. MAIN PRAYER TIMES VIEW -->
             <div v-if="!showPanduan" class="prayer-main-view">
                 <!-- Next Prayer Hero Countdown Card -->

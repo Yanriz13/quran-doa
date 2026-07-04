@@ -5,7 +5,7 @@ import { iqroData } from "../services/iqroData.js";
 export default {
     name: "QuranShorts",
     template: `
-        <div class="quran-tab">
+        <div class="quran-tab tab-content">
             <!-- 1. MAIN SELECTION MENU -->
             <div v-if="currentSection === 'menu'" class="mengaji-menu-view">
                 <div class="card welcome-card text-center mb-4">

@@ -28,22 +28,12 @@
     <div id="app" :class="['app-container', themeClass]" v-cloak>
         <!-- Mobile Shell Wrapper (Aesthetic on Desktop, Seamless on Mobile) -->
         <div class="mobile-frame">
-            <!-- App Header -->
-            <header class="app-header">
-                <div class="header-top">
-                    <div class="brand">
-                        <span class="brand-logo">🕌</span>
-                        <div>
-                            <h1>Nuang Belajar</h1>
-                            <span class="hijri-date">{{ hijriDate }}</span>
-                        </div>
-                    </div>
-                    <div class="location-badge" @click="triggerLocationFetch">
-                        <i data-lucide="map-pin"></i>
-                        <span>{{ currentCity }}</span>
-                    </div>
-                </div>
-            </header>
+            <!-- App Header Component -->
+            <app-header 
+                :hijri-date="hijriDate" 
+                :current-city="currentCity" 
+                @location-request="triggerLocationFetch"
+            ></app-header>
 
             <!-- Main Content Area (Scrollable) -->
             <main class="app-content">
@@ -64,18 +54,11 @@
                 </transition>
             </main>
 
-            <!-- Bottom Navigation Bar -->
-            <nav class="app-navigation">
-                <button 
-                    v-for="tab in tabs" 
-                    :key="tab.id"
-                    :class="['nav-item', { active: activeTab === tab.id }]"
-                    @click="activeTab = tab.id"
-                >
-                    <i :data-lucide="tab.icon"></i>
-                    <span>{{ tab.label }}</span>
-                </button>
-            </nav>
+            <!-- App Navigation Component -->
+            <app-navigation 
+                :tabs="tabs" 
+                v-model:active-tab="activeTab"
+            ></app-navigation>
         </div>
 
         <!-- Global Audio Player (Hidden) for Adhan / Audio Quran -->

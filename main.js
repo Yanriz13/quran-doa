@@ -5,6 +5,8 @@ import QiblaCompass from "./components/QiblaCompass.js";
 import DhikrCounter from "./components/DhikrCounter.js";
 import QuranShorts from "./components/QuranShorts.js";
 import DoaHub from "./components/DoaHub.js";
+import AppHeader from "./components/AppHeader.js";
+import AppNavigation from "./components/AppNavigation.js";
 
 import { createApp, ref, computed, onMounted, onUnmounted, watch } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 
@@ -14,7 +16,9 @@ const App = {
         QiblaCompass,
         DhikrCounter,
         QuranShorts,
-        DoaHub
+        DoaHub,
+        AppHeader,
+        AppNavigation
     },
     setup() {
         const activeTab = ref("prayer");
