@@ -26,6 +26,7 @@ const App = {
         const adhanSound = ref("adhan");
         const isDark = ref(true);
         const audioSrc = ref("");
+        const deferredPrompt = ref(null);
 
         // Next prayer object holding details
         const nextPrayer = ref({
@@ -60,6 +61,18 @@ const App = {
 
         // Load configuration and data
         onMounted(async () => {
+            // Listen to PWA install prompt event
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt.value = e;
+                console.log('PWA: beforeinstallprompt event fired.');
+            });
+
+            window.addEventListener('appinstalled', () => {
+                deferredPrompt.value = null;
+                console.log('PWA: App successfully installed.');
+            });
+
             // Load theme & settings
             const savedDark = localStorage.getItem("qolbi_settings_dark_mode");
             if (savedDark !== null) isDark.value = savedDark === "true";
@@ -400,6 +413,16 @@ const App = {
             loadPrayerTimesData();
         };
 
+        const installApp = async () => {
+            if (!deferredPrompt.value) return;
+            deferredPrompt.value.prompt();
+            const { outcome } = await deferredPrompt.value.userChoice;
+            console.log(`PWA: User choice outcome is ${outcome}`);
+            if (outcome === 'accepted') {
+                deferredPrompt.value = null;
+            }
+        };
+
         return {
             activeTab,
             tabs,
@@ -414,7 +437,11 @@ const App = {
             triggerLocationFetch,
             playAdhan,
             audioEnded,
-            handleSettingsChanged
+            handleSettingsChanged,
+            
+            // PWA returns
+            deferredPrompt,
+            installApp
         };
     }
 };

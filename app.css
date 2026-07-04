@@ -280,6 +280,7 @@ body {
 .app-content {
     flex-grow: 1;
     overflow-y: auto;
+    min-height: 0;
     padding: 8px 20px 24px 20px;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;

@@ -16,9 +16,13 @@ export default {
         location: {
             type: Object,
             default: () => ({ lat: null, lng: null })
+        },
+        deferredPrompt: {
+            type: Object,
+            default: null
         }
     },
-    emits: ["location-request", "play-adhan"],
+    emits: ["location-request", "play-adhan", "install-click"],
     template: `
         <div class="prayer-times-tab">
             <!-- 1. MAIN PRAYER TIMES VIEW -->
@@ -40,6 +44,20 @@ export default {
                     <div class="quick-status">
                         <p class="status-msg">{{ statusMessage }}</p>
                     </div>
+                </div>
+
+                <!-- Custom PWA Install Banner -->
+                <div v-if="deferredPrompt" class="card install-banner flex align-center justify-between mb-3" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(5, 150, 105, 0.04) 100%); border: 1px solid rgba(16, 185, 129, 0.2); padding: 12px 16px;">
+                    <div class="flex align-center gap-3">
+                        <span style="font-size: 20px; filter: drop-shadow(0 2px 4px rgba(16,185,129,0.3));">📲</span>
+                        <div style="text-align: left; flex: 1;">
+                            <h3 style="font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Instal Nuang Belajar</h3>
+                            <p class="text-xs text-muted" style="line-height: 1.3;">Pasang di layar HP untuk akses instan & luring.</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-sm" style="background: var(--primary-color); border: none; box-shadow: 0 2px 6px var(--primary-glow); font-weight: 700; padding: 6px 12px;" @click="$emit('install-click')">
+                        Pasang
+                    </button>
                 </div>
 
                 <!-- TRIGGER CARD: Panduan & Bacaan Sholat -->

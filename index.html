@@ -55,8 +55,10 @@
                             :prayer-times="prayerTimes"
                             :next-prayer="nextPrayer"
                             :location="coords"
+                            :deferred-prompt="deferredPrompt"
                             @location-request="triggerLocationFetch"
                             @play-adhan="playAdhan"
+                            @install-click="installApp"
                         ></component>
                     </keep-alive>
                 </transition>
