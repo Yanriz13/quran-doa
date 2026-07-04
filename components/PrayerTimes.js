@@ -96,7 +96,13 @@ export default {
                         >
                             <div class="timing-left">
                                 <span class="p-icon">{{ p.icon }}</span>
-                                <span class="p-name">{{ p.name }}</span>
+                                <div class="p-info">
+                                    <div class="p-name-row flex align-center gap-2">
+                                        <span class="p-name">{{ p.name }}</span>
+                                        <span v-if="p.rakaat" class="p-rakaat-badge">{{ p.rakaat }} Rakaat</span>
+                                    </div>
+                                    <p v-if="p.desc" class="p-desc">{{ p.desc }}</p>
+                                </div>
                             </div>
                             <div class="timing-right">
                                 <span class="p-time">{{ p.time }}</span>
@@ -404,15 +410,13 @@ export default {
             stopAllSholatAudio();
         });
 
-        // Map English API names to Indonesian and add icons
+        // Map English API names to Indonesian and add icons — hanya 5 sholat fardhu
         const prayerDetails = {
-            Fajr: { name: "Subuh", icon: "🌅" },
-            Sunrise: { name: "Terbit", icon: "☀️" },
-            Dhuhr: { name: "Dzuhur", icon: "☀️" },
-            Asr: { name: "Ashar", icon: "⛅" },
-            Maghrib: { name: "Maghrib", icon: "🌇" },
-            Isha: { name: "Isya", icon: "🌃" },
-            Imsak: { name: "Imsak", icon: "📿" }
+            Fajr:    { name: "Subuh",   icon: "🌅", rakaat: 2, desc: "Dari fajar menyingsing hingga sebelum matahari terbit." },
+            Dhuhr:   { name: "Zuhur",   icon: "🌤️", rakaat: 4, desc: "Setelah matahari tergelincir ke barat hingga bayangan sama panjang dengan bendanya." },
+            Asr:     { name: "Ashar",   icon: "⛅", rakaat: 4, desc: "Saat bayangan benda lebih panjang dari bendanya hingga matahari terbenam." },
+            Maghrib: { name: "Maghrib", icon: "🌇", rakaat: 3, desc: "Setelah matahari terbenam hingga mega merah menghilang." },
+            Isha:    { name: "Isya",    icon: "🌃", rakaat: 4, desc: "Setelah mega merah menghilang hingga menjelang waktu Subuh." },
         };
 
         const formattedTimings = computed(() => {
@@ -430,11 +434,13 @@ export default {
                         apiName: key,
                         name: detail.name,
                         icon: detail.icon,
+                        rakaat: detail.rakaat,
+                        desc: detail.desc,
                         time: value,
                         isPassed: timeNow.value > pDate
                     };
                 }).sort((a, b) => {
-                    const order = ["Imsak", "Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
+                    const order = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
                     return order.indexOf(a.apiName) - order.indexOf(b.apiName);
                 });
         });

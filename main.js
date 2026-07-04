@@ -217,18 +217,19 @@ const App = {
             const now = new Date();
             const today = now.toLocaleDateString("en-US");
             
-            // Map prayer names
-            const targetPrayers = ["Imsak", "Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+            // Hanya 5 sholat fardhu untuk hitung mundur (tanpa Imsak & Terbit)
+            const targetPrayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
             const indonesianNames = {
-                Imsak: "Imsak",
                 Fajr: "Subuh",
-                Dhuhr: "Dzuhur",
+                Dhuhr: "Zuhur",
                 Asr: "Ashar",
                 Maghrib: "Maghrib",
                 Isha: "Isya"
             };
 
-            const parsedPrayers = targetPrayers.map(key => {
+            const parsedPrayers = targetPrayers
+                .filter(key => prayerTimes.value[key])
+                .map(key => {
                 const timeStr = prayerTimes.value[key];
                 const [h, m] = timeStr.split(":");
                 const dateObj = new Date(`${today} ${h}:${m}:00`);
@@ -306,26 +307,43 @@ const App = {
             
             const now = new Date();
             const currentHourMin = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-            const targetPrayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+            
+            // Hanya 5 sholat fardhu yang membunyikan adzan (tanpa Imsak & Terbit)
+            const adzanPrayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
             const indonesianNames = {
                 Fajr: "Subuh",
-                Dhuhr: "Dzuhur",
+                Dhuhr: "Zuhur",
                 Asr: "Ashar",
                 Maghrib: "Maghrib",
                 Isha: "Isya"
             };
 
-            for (const key of targetPrayers) {
-                if (prayerTimes.value[key] === currentHourMin && lastAlarmTriggered !== key) {
-                    // Trigger Alarm!
+            for (const key of adzanPrayers) {
+                const prayerTime = prayerTimes.value[key];
+                if (prayerTime && prayerTime === currentHourMin && lastAlarmTriggered !== key) {
                     lastAlarmTriggered = key;
                     triggerPrayerAlarm(indonesianNames[key]);
                     break;
                 }
             }
             
-            // Reset trigger lock when time advances
-            if (!Object.values(prayerTimes.value).includes(currentHourMin)) {
+            // Imsak: hanya notifikasi tanpa adzan
+            const imsakTime = prayerTimes.value["Imsak"];
+            if (imsakTime && imsakTime === currentHourMin && lastAlarmTriggered !== "Imsak") {
+                lastAlarmTriggered = "Imsak";
+                if ("Notification" in window && Notification.permission === "granted") {
+                    new Notification("⏰ Waktu Imsak", {
+                        body: `Imsak ${currentCity.value} pukul ${imsakTime}. Segera akhiri sahur Anda.`,
+                        icon: "https://unpkg.com/lucide-static@latest/icons/bell.png"
+                    });
+                }
+            }
+            
+            // Reset trigger lock when time advances past any prayer time
+            const allActiveTimes = [...adzanPrayers, "Imsak"]
+                .map(k => prayerTimes.value[k])
+                .filter(Boolean);
+            if (!allActiveTimes.includes(currentHourMin)) {
                 lastAlarmTriggered = "";
             }
         };
