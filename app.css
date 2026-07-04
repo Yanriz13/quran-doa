@@ -196,6 +196,30 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Mobile phones: full screen, nav fixed at bottom */
+@media (max-width: 479px) {
+    .mobile-frame {
+        max-width: 100%;
+        max-height: 100vh;
+        max-height: 100dvh;
+        height: 100vh;
+        height: 100dvh;
+        border: none;
+        border-radius: 0;
+    }
+    .app-navigation {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        width: 100%;
+    }
+    .app-content {
+        padding-bottom: 90px !important;
+    }
+}
+
 /* Desktop specific mock bezel */
 @media (min-width: 480px) {
     .mobile-frame {
@@ -225,45 +249,58 @@ body {
 .brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .brand-logo {
-    font-size: 26px;
-    filter: drop-shadow(0 0 6px var(--primary-glow));
+    font-size: 24px;
+    filter: drop-shadow(0 0 8px var(--primary-glow));
+    flex-shrink: 0;
 }
 
 .brand h1 {
     font-family: var(--font-heading);
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 800;
-    letter-spacing: -0.5px;
+    line-height: 1.1;
+    letter-spacing: -0.2px;
     background: linear-gradient(135deg, var(--text-main) 60%, var(--primary-color) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    margin: 0;
 }
 
 .hijri-date {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-muted);
-    font-weight: 500;
+    font-weight: 600;
     display: block;
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
 .location-badge {
     display: flex;
     align-items: center;
     gap: 6px;
-    background: var(--bg-card);
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-color);
-    padding: 8px 14px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 10px;
+    font-weight: 700;
     cursor: pointer;
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     transition: all 0.2s ease;
+    max-width: 120px;
+}
+
+.location-badge span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .location-badge:active {
@@ -377,6 +414,24 @@ body {
 }
 
 /* Buttons */
+.dhikr-tab {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    gap: 16px;
+    padding: 8px 0;
+}
+
+.dhikr-tab .card {
+    margin-bottom: 0; /* cards already have margin-bottom, but ensure spacing inside */
+}
+
+/* Ensure counter main card does not overflow its container */
+.dhikr-tab .counter-main-card {
+    flex-shrink: 0;
+}
+
 .btn {
     border: none;
     outline: none;
@@ -762,29 +817,41 @@ body {
 }
 
 /* --- TAB 3: DHIKR COUNTER --- */
+.dhikr-tab {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0;
+}
+
+.selector-card {
+    background: linear-gradient(145deg, var(--bg-card) 0%, rgba(16, 185, 129, 0.05) 100%);
+    padding: 10px;
+    border-radius: 16px;
+    margin-bottom: 0;
+}
+
 .phrase-picker {
     display: flex;
     overflow-x: auto;
-    gap: 8px;
-    padding-bottom: 6px;
+    gap: 6px;
+    padding: 2px 2px 4px 2px;
     scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
-.phrase-picker::-webkit-scrollbar {
-    display: none;
-}
+.phrase-picker::-webkit-scrollbar { display: none; }
 
 .phrase-btn {
     flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border-color);
-    padding: 8px 16px;
-    border-radius: 14px;
+    padding: 5px 10px;
+    border-radius: 8px;
     color: var(--text-muted);
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
 .phrase-btn.active {
@@ -794,157 +861,176 @@ body {
 }
 
 .phrase-display {
-    min-height: 90px;
+    min-height: 70px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 6px;
+    margin-top: 4px;
 }
 
 .phrase-display .arabic {
-    font-size: 32px;
-    font-weight: 500;
+    font-family: 'Amiri', serif;
+    font-size: 24px;
+    font-weight: 600;
     color: var(--text-main);
 }
 
 .phrase-display .meaning {
-    font-size: 12px;
+    font-size: 10px;
     color: var(--text-muted);
-    margin-top: 4px;
+    font-style: italic;
 }
 
 .counter-main-card {
     position: relative;
-    padding: 30px 20px;
+    padding: 15px 12px 12px 12px;
+    border-radius: 20px;
+    background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.08), var(--bg-card));
+    margin-bottom: 0;
 }
 
 .target-badge {
     position: absolute;
-    top: 16px;
-    right: 20px;
-    font-size: 11px;
+    top: 8px;
+    right: 12px;
+    font-size: 8px;
     font-weight: 700;
     background: var(--secondary-color);
     color: var(--text-inverse);
-    padding: 4px 10px;
-    border-radius: 12px;
+    padding: 1px 5px;
+    border-radius: 5px;
 }
 
 .counter-display {
     position: relative;
-    width: 180px;
-    height: 180px;
-    margin: 16px auto;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 10px auto;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(255, 255, 255, 0.02) 100%);
-    border: 4px solid var(--border-color);
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+    background: #000;
+    border: 4px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        inset 0 0 15px rgba(0,0,0,0.8),
+        0 4px 10px rgba(0,0,0,0.4);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    overflow: hidden;
 }
 
 .counter-display:active {
     transform: scale(0.96);
-    border-color: var(--primary-color);
-}
-
-.ripple {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, transparent 70%);
-    animation: rip 0.3s ease-out;
-}
-
-@keyframes rip {
-    from { transform: scale(0.5); opacity: 1; }
-    to { transform: scale(1.5); opacity: 0; }
-}
-
-.counter-circle-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .count-number {
     font-family: var(--font-heading);
     font-weight: 800;
-    font-size: 52px;
+    font-size: 42px;
     color: var(--primary-color);
-    text-shadow: 0 0 15px var(--primary-glow);
+    text-shadow: 0 0 12px var(--primary-glow);
+    line-height: 1;
 }
 
 .tap-label {
-    font-size: 10px;
+    font-size: 8px;
     color: var(--text-muted);
     font-weight: 700;
     letter-spacing: 2px;
-    margin-top: -4px;
+    opacity: 0.5;
+}
+
+.counter-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.btn-reset-new {
+    background: rgba(244, 63, 94, 0.08);
+    color: var(--accent-red);
+    border: 1px solid rgba(244, 63, 94, 0.12);
+    padding: 5px 8px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
 .target-selector {
     display: flex;
-    gap: 4px;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 3px;
-    border-radius: 14px;
-    border: 1px solid var(--border-color);
+    gap: 1px;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 2px;
+    border-radius: 8px;
 }
 
 .btn-target {
     background: none;
     border: none;
     color: var(--text-muted);
-    padding: 6px 12px;
-    border-radius: 11px;
-    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
 .btn-target.active {
-    background: var(--bg-shell);
+    background: var(--bg-card);
     color: var(--secondary-color);
-    box-shadow: var(--shadow-sm);
 }
 
 .history-card {
-    padding: 16px 20px;
+    padding: 10px 12px;
+    border-radius: 16px;
+}
+
+.history-card h3 {
+    font-size: 13px;
 }
 
 .history-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 12px;
+    gap: 5px;
+    margin-top: 5px;
 }
 
 .history-row {
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border-color);
-    font-size: 13px;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.01);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.history-row:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+.history-phrase {
+    font-weight: 700;
+    font-size: 11px;
 }
 
 .history-date {
-    display: block;
-    font-size: 10px;
+    font-size: 8px;
     color: var(--text-muted);
-    margin-top: 2px;
 }
 
 .history-count {
     font-family: var(--font-heading);
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 11px;
     color: var(--primary-color);
+}
+
+.empty-msg {
+    opacity: 0.5;
+    font-size: 10px;
+}
 }
 
 /* --- TAB 4: QURAN SHORTS --- */

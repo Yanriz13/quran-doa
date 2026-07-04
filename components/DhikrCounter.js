@@ -14,12 +14,12 @@ export default {
                         :class="['phrase-btn', { active: activePhraseIdx === idx }]"
                         @click="changePhrase(idx)"
                     >
-                        <span>{{ phrase.transliteration }}</span>
+                        {{ phrase.transliteration }}
                     </button>
                 </div>
-                <div class="phrase-display text-center mt-4">
-                    <h2 class="arabic text-center">{{ activePhrase.arabic }}</h2>
-                    <p class="meaning italic">"{{ activePhrase.translation }}"</p>
+                <div class="phrase-display text-center">
+                    <h2 class="arabic">{{ activePhrase.arabic }}</h2>
+                    <p class="meaning">"{{ activePhrase.translation }}"</p>
                 </div>
             </div>
 
@@ -35,9 +35,9 @@ export default {
                     </div>
                 </div>
 
-                <div class="counter-actions flex justify-between mt-4">
-                    <button class="btn btn-secondary btn-icon" @click="resetCount" title="Reset Counter">
-                        🔄 Reset
+                <div class="counter-actions">
+                    <button class="btn-reset-new" @click="resetCount" title="Reset Counter">
+                        <i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i> Reset
                     </button>
                     
                     <div class="target-selector">
@@ -57,21 +57,21 @@ export default {
             <div class="card history-card">
                 <div class="card-header flex justify-between align-center">
                     <h3>Riwayat Dzikir</h3>
-                    <button class="btn-clear-history text-xs text-muted" @click="clearHistory" v-if="history.length > 0">
-                        Hapus Semua
+                    <button class="btn-clear-history text-xs text-muted flex align-center gap-1" @click="clearHistory" v-if="history.length > 0">
+                        <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i> Bersihkan
                     </button>
                 </div>
                 <div class="history-list" v-if="history.length > 0">
-                    <div v-for="(item, idx) in history" :key="idx" class="history-row flex justify-between">
-                        <div>
-                            <strong>{{ item.phrase }}</strong>
+                    <div v-for="(item, idx) in history" :key="idx" class="history-row">
+                        <div class="history-info">
+                            <span class="history-phrase">{{ item.phrase }}</span>
                             <span class="history-date">{{ item.date }}</span>
                         </div>
-                        <span class="history-count">{{ item.count }} kali</span>
+                        <span class="history-count">{{ item.count }}x</span>
                     </div>
                 </div>
-                <p v-else class="empty-msg text-center text-muted py-4">
-                    Belum ada riwayat dzikir hari ini.
+                <p v-else class="empty-msg text-center py-4">
+                    Belum ada riwayat hari ini.
                 </p>
             </div>
         </div>
@@ -97,6 +97,10 @@ export default {
 
         // Load data from localStorage
         onMounted(() => {
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+
             const savedCount = localStorage.getItem("qolbi_dhikr_count");
             if (savedCount !== null) count.value = parseInt(savedCount);
 
