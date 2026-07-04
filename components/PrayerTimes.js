@@ -31,7 +31,7 @@ export default {
                 <div class="card countdown-card">
                     <div class="countdown-circle">
                         <svg class="progress-ring" width="160" height="160">
-                            <circle class="progress-ring-bg" stroke="rgba(255, 255, 255, 0.97)" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/>
+                            <circle class="progress-ring-bg" stroke="rgba(255, 255, 255, 0.08)" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/>
                             <circle class="progress-ring-fg" stroke="var(--primary-color)" stroke-width="8" :stroke-dasharray="strokeDasharray" :stroke-dashoffset="strokeDashoffset" fill="transparent" r="70" cx="80" cy="80" stroke-linecap="round"/>
                         </svg>
                         <div class="countdown-text">
