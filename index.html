@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Nuang Belajar - Asisten Muslim & Pengingat Sholat</title>
+    
+    <!-- Meta untuk PWA / Mobile Web App -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+    <div id="app" :class="['app-container', themeClass]" v-cloak>
+        <!-- Mobile Shell Wrapper (Aesthetic on Desktop, Seamless on Mobile) -->
+        <div class="mobile-frame">
+            <!-- App Header -->
+            <header class="app-header">
+                <div class="header-top">
+                    <div class="brand">
+                        <span class="brand-logo">🕌</span>
+                        <div>
+                            <h1>Nuang Belajar</h1>
+                            <span class="hijri-date">{{ hijriDate }}</span>
+                        </div>
+                    </div>
+                    <div class="location-badge" @click="triggerLocationFetch">
+                        <i data-lucide="map-pin"></i>
+                        <span>{{ currentCity }}</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area (Scrollable) -->
+            <main class="app-content">
+                <!-- Keep alive or dynamic component render based on currentTab -->
+                <transition name="fade" mode="out-in">
+                    <keep-alive>
+                        <component 
+                            :is="currentComponent" 
+                            :prayer-times="prayerTimes"
+                            :next-prayer="nextPrayer"
+                            :location="coords"
+                            @location-request="triggerLocationFetch"
+                            @play-adhan="playAdhan"
+                        ></component>
+                    </keep-alive>
+                </transition>
+            </main>
+
+            <!-- Bottom Navigation Bar -->
+            <nav class="app-navigation">
+                <button 
+                    v-for="tab in tabs" 
+                    :key="tab.id"
+                    :class="['nav-item', { active: activeTab === tab.id }]"
+                    @click="activeTab = tab.id"
+                >
+                    <i :data-lucide="tab.icon"></i>
+                    <span>{{ tab.label }}</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Global Audio Player (Hidden) for Adhan / Audio Quran -->
+        <audio ref="audioPlayer" :src="audioSrc" @ended="audioEnded" style="display: none;"></audio>
+    </div>
+
+    <!-- Main JavaScript App Entry -->
+    <script type="module" src="main.js"></script>
+</body>
+</html>
