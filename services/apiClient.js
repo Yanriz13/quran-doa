@@ -35,8 +35,8 @@ export async function fetchApiData(path) {
     try {
         const res = await fetch(`./proxy.php?path=${encodeURIComponent(path)}`);
         const json = await parseJsonSafe(res);
-        // Proxy mengembalikan error internal dalam bentuk { code: 500, ... }
-        if (json && !json.code) {
+        // Jika respons dari proxy valid (sukses / ada data / bukan proxy error), kembalikan
+        if (json && (json.code === 200 || json.data || !json.code)) {
             return json;
         }
     } catch (err) {
@@ -62,5 +62,15 @@ export async function fetchApiData(path) {
  * Di lokal memakai proxy.php; di hosting statis memakai Google Translate TTS langsung.
  */
 export function buildTtsUrl(arabicText) {
-    return `./proxy.php?tts=${encodeURIComponent(arabicText)}`;
+    const isLocal = window.location.hostname === "localhost" || 
+                    window.location.hostname === "127.0.0.1" || 
+                    window.location.hostname.endsWith(".local") || 
+                    window.location.hostname.endsWith(".test") || 
+                    window.location.protocol === "file:";
+    
+    if (isLocal) {
+        return `./proxy.php?tts=${encodeURIComponent(arabicText)}`;
+    } else {
+        return `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(arabicText)}&tl=ar&client=tw-ob`;
+    }
 }

@@ -1,6 +1,7 @@
 // Components/QuranShorts.js
 import { ref, onMounted, onUnmounted, computed } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 import { iqroData } from "../services/iqroData.js";
+import { fetchApiData, buildTtsUrl } from '../services/apiClient.js';
 
 export default {
     name: "QuranShorts",
@@ -383,8 +384,8 @@ export default {
                 // Hentikan suara yang sedang aktif terlebih dahulu
                 stopAllIqroAudio();
 
-                // Kita gunakan Google Translate TTS proxy untuk melafalkan Teks Persis yang tertulis di kartu
-                const ttsUrl = `./proxy.php?tts=${encodeURIComponent(item.ar)}`;
+                // Kita gunakan Google Translate TTS proxy/direct untuk melafalkan Teks Persis yang tertulis di kartu
+                const ttsUrl = buildTtsUrl(item.ar);
                 const audio = new Audio(ttsUrl);
                 activeAudios.push(audio);
                 audio.play().catch(e => console.warn("Google TTS block:", e));
@@ -511,17 +512,14 @@ export default {
                 });
             }
 
-            // Fetch all 114 surahs online via local proxy
+            // Fetch all 114 surahs online via local proxy or direct API fallback
             try {
-                const res = await fetch("./proxy.php?path=surat");
-                if (res.ok) {
-                    const json = await res.json();
-                    if (json.code === 200 && Array.isArray(json.data)) {
-                        surahsList.value = json.data;
-                    }
+                const json = await fetchApiData("surat");
+                if (json && json.code === 200 && Array.isArray(json.data)) {
+                    surahsList.value = json.data;
                 }
             } catch (err) {
-                console.warn("Gagal mengambil daftar surah via proxy, menggunakan offline fallback:", err);
+                console.warn("Gagal mengambil daftar surah, menggunakan offline fallback:", err);
             }
 
             window.addEventListener("stop-all-iqro-audio", stopAllIqroAudio);
@@ -546,10 +544,8 @@ export default {
             }
 
             try {
-                const res = await fetch(`./proxy.php?path=surat/${nomor}`);
-                if (!res.ok) throw new Error("Koneksi gagal");
-                const json = await res.json();
-                if (json.code === 200) {
+                const json = await fetchApiData(`surat/${nomor}`);
+                if (json && json.code === 200) {
                     selectedSurah.value = json.data;
                     
                     // Audio url from Al-Afasy (usually audioFull -> "05" is Mishary Rashid Al-Afasy)
@@ -578,10 +574,8 @@ export default {
             loading.value = true;
 
             try {
-                const res = await fetch(`./proxy.php?path=tafsir/${selectedSurah.value.nomor}`);
-                if (!res.ok) throw new Error("Gagal mengunduh tafsir");
-                const json = await res.json();
-                if (json.code === 200) {
+                const json = await fetchApiData(`tafsir/${selectedSurah.value.nomor}`);
+                if (json && json.code === 200) {
                     selectedTafsir.value = json.data;
                 } else {
                     throw new Error("Tafsir tidak ditemukan");

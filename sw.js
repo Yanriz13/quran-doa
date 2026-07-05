@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nuang-belajar-v2';
+const CACHE_NAME = 'nuang-belajar-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -7,6 +7,7 @@ const ASSETS = [
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
+  './services/apiClient.js',
   './services/doaData.js',
   './services/prayerService.js',
   './services/qiblaService.js',

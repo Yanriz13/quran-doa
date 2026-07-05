@@ -1,6 +1,7 @@
 // Components/PrayerTimes.js
 import { ref, computed, onMounted, onUnmounted } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 import { doaData } from "../services/doaData.js";
+import { buildTtsUrl } from "../services/apiClient.js";
 
 export default {
     name: "PrayerTimes",
@@ -351,7 +352,7 @@ export default {
             playingStepId.value = index;
 
             try {
-                const audioUrl = step.audio ? step.audio : `./proxy.php?tts=${encodeURIComponent(step.ar)}`;
+                const audioUrl = step.audio ? step.audio : buildTtsUrl(step.ar);
                 const audio = new Audio(audioUrl);
                 activeAudios.push(audio);
 

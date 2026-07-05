@@ -1,6 +1,6 @@
 // components/DoaHub.js
 import { ref, computed, onMounted, onUnmounted } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
-import { fetchApiData } from '../services/apiClient.js';
+import { fetchApiData, buildTtsUrl } from '../services/apiClient.js';
 
 export default {
     name: "DoaHub",
@@ -213,16 +213,13 @@ export default {
             isTagDropdownOpen.value = false;
         };
 
-        // Fetch doas from local proxy
+        // Fetch doas from local proxy or direct API fallback
         const loadDoaList = async () => {
             loading.value = true;
             try {
-                const res = await fetch("./proxy.php?path=doa");
-                if (res.ok) {
-                    const json = await res.json();
-                    if (json && Array.isArray(json.data)) {
-                        doaList.value = json.data;
-                    }
+                const json = await fetchApiData("doa");
+                if (json && Array.isArray(json.data)) {
+                    doaList.value = json.data;
                 }
             } catch (err) {
                 console.error("Gagal memuat list doa dari API:", err);
@@ -320,7 +317,7 @@ export default {
             isAudioPlaying.value = true;
 
             try {
-                const ttsUrl = `./proxy.php?tts=${encodeURIComponent(arabicText)}`;
+                const ttsUrl = buildTtsUrl(arabicText);
                 const audio = new Audio(ttsUrl);
                 activeAudios.push(audio);
 
